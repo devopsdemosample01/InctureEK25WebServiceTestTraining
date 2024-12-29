@@ -1,0 +1,421 @@
+{
+	"info": {
+		"_postman_id": "3d932c93-82f5-4a69-a1f2-6358775b4f2a",
+		"name": "CMD-DemoIntegrationTestCases",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Successful User Registration/SignUp",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "3ab78bba-f1a3-46eb-adc1-131f5a4adbc1",
+						"exec": [
+							"var jsonData=JSON.parse(responseBody);\r",
+							"pm.environment.set(\"id\",jsonData.id);\r",
+							"\r",
+							"pm.test(\"User Registration Successful\", () => {\r",
+							"pm.expect(pm.response.code).to.be.oneOf([200,201]);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response time is less than 1000ms\", () => {\r",
+							"  pm.expect(pm.response.responseTime).to.be.below(1000);\r",
+							"});\r",
+							"\r",
+							"console.log('Script-User Registration')\r",
+							"\r",
+							"/*pm.test(\"Status code name has string\", () => {\r",
+							"  pm.response.to.have.status(\"Created\");\r",
+							"}); */"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{accessToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"eve.holt@reqres.in\",\r\n    \"password\": \"Test@123\",\r\n    \"Gender\" : \"Male\",\r\n    \"Address\": {\r\n            \"PostalCode\": \"22102\",\r\n            \"AddrLine1\": \"PO BOX 1234\",\r\n            \"AddrLine2\": \"\",\r\n            \"City\": \"GAITHERSBURG\",\r\n            \"Region\": \"MB\",\r\n            \"Country\": \"USA\"\r\n        },\r\n        \"Contacts\": [\r\n            {\r\n                \"FirstName\": \"Eve\",\r\n                \"LastName\": \"Holt\",\r\n                \"ContactPoint\": [\r\n                    {\r\n                        \"Mode\": \"Phone\",\r\n                        \"Value\": \"+917259242041\"\r\n                    },\r\n                    {\r\n                        \"Mode\": \"Mobile\",\r\n                        \"Value\": \"+917259242041\"\r\n                    },\r\n                    {\r\n                        \"Mode\": \"Email\",\r\n                        \"Value\": \"eve.holt@reqres.in\"\r\n                    }\r\n                ]\r\n            }\r\n        ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://reqres.in/api/register",
+					"protocol": "https",
+					"host": [
+						"reqres",
+						"in"
+					],
+					"path": [
+						"api",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET Specific User Info",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "0a77df0e-0cff-4cbc-99b1-9a848d9b1d1f",
+						"exec": [
+							"/*const json_response = pm.response.json();*/\r",
+							"var jsonData = pm.response.json();\r",
+							"pm.environment.set(\"email\",jsonData.data.email);\r",
+							"\r",
+							"pm.test(\"User Info Displayed\", () => {\r",
+							"  pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response time is less than 1000ms\", () => {\r",
+							"  pm.expect(pm.response.responseTime).to.be.below(1000);\r",
+							"});\r",
+							"\r",
+							"console.log('Script-Display Specific User Info')"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "b0ef4f98-452c-448c-98ba-547f2a6ccf16",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{accessToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "https://reqres.in/api/users/{{id}}",
+					"protocol": "https",
+					"host": [
+						"reqres",
+						"in"
+					],
+					"path": [
+						"api",
+						"users",
+						"{{id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "User Login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "515354d7-0f1a-44ed-bc9b-be58678e26a0",
+						"exec": [
+							"pm.test(\"User Login Successful\", () => {\r",
+							"  pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response time is less than 1000ms\", () => {\r",
+							"  pm.expect(pm.response.responseTime).to.be.below(1000);\r",
+							"});\r",
+							"\r",
+							"console.log('Script-User Login')"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{accessToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"{{email}}\",\r\n    \"password\": \"Test@123\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://reqres.in/api/login",
+					"protocol": "https",
+					"host": [
+						"reqres",
+						"in"
+					],
+					"path": [
+						"api",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET Specific Resource Info",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "c3fc2c85-1901-4b3c-b6a0-a5e7a9ade668",
+						"exec": [
+							"var jsonData = pm.response.json();\r",
+							"pm.environment.set(\"name\",jsonData.data.name);\r",
+							"\r",
+							"pm.test(\"Resource Info Displayed\", () => {\r",
+							"  pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response time is less than 1000ms\", () => {\r",
+							"  pm.expect(pm.response.responseTime).to.be.below(1000);\r",
+							"});\r",
+							"\r",
+							"console.log('Script-Display Specific Resource Info')"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{accessToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://reqres.in/api/unknown/{{id}}",
+					"protocol": "https",
+					"host": [
+						"reqres",
+						"in"
+					],
+					"path": [
+						"api",
+						"unknown",
+						"{{id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create User Role",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "6dd8443a-5617-4de7-9d10-ce6167e33afe",
+						"exec": [
+							"/*pm.test(\"User Role Created\", () => {\r",
+							"  pm.response.to.have.status(201);\r",
+							"});*/\r",
+							"\r",
+							"pm.test(\"User Role Creation Successful\", () => {\r",
+							"pm.expect(pm.response.code).to.be.oneOf([200,201]);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Verify User Role\",() => {\r",
+							"const responseJson = pm.response.json();    \r",
+							"/*pm.expect(responseJson.job).to.eql(pm.environment.get(\"name\"));*/\r",
+							"pm.expect(responseJson.job).to.include(\"leader\")\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response time is less than 1000ms\", () => {\r",
+							"  pm.expect(pm.response.responseTime).to.be.below(1000);\r",
+							"});\r",
+							"\r",
+							"\r",
+							"console.log('Script-Create User Role')"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{accessToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"{{name}}\",\r\n    \"job\": \"leader\",\r\n    \"Address\": {\r\n            \"PostalCode\": \"22102\",\r\n            \"AddrLine1\": \"PO BOX 1234\",\r\n            \"AddrLine2\": \"\",\r\n            \"City\": \"GAITHERSBURG\",\r\n            \"Region\": \"MB\",\r\n            \"Country\": \"USA\"\r\n        },\r\n        \"Contacts\": [\r\n            {\r\n                \"FirstName\": \"Eve\",\r\n                \"LastName\": \"Holt\",\r\n                \"ContactPoint\": [\r\n                    {\r\n                        \"Mode\": \"Phone\",\r\n                        \"Value\": \"+917259242041\"\r\n                    },\r\n                    {\r\n                        \"Mode\": \"Mobile\",\r\n                        \"Value\": \"+917259242041\"\r\n                    },\r\n                    {\r\n                        \"Mode\": \"Email\",\r\n                        \"Value\": \"eve.holt@reqres.in\"\r\n                    }\r\n                ]\r\n            }\r\n        ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://reqres.in/api/users",
+					"protocol": "https",
+					"host": [
+						"reqres",
+						"in"
+					],
+					"path": [
+						"api",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Specific User",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "ebe9fa9d-fa52-4170-ae42-f9db83b8e65e",
+						"exec": [
+							"pm.test(\"User Deleted Successfully\", () => {\r",
+							"  pm.response.to.have.status(204);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response time is less than 1000ms\", () => {\r",
+							"  pm.expect(pm.response.responseTime).to.be.below(1000);\r",
+							"});\r",
+							"\r",
+							"console.log('Script-Delete User')\r",
+							"\r",
+							"pm.environment.unset(\"id\");\r",
+							"pm.environment.unset(\"email\");\r",
+							"pm.environment.unset(\"name\");"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{accessToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "https://reqres.in/api/users/{{id}}",
+					"protocol": "https",
+					"host": [
+						"reqres",
+						"in"
+					],
+					"path": [
+						"api",
+						"users",
+						"{{id}}"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "inherit"
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "0b2665ef-0f04-4680-af76-ed5d1b164949",
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "63fd2b01-40f3-40b1-96ab-c4605b5d3f16",
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"id": "51ca626c-506b-4637-8ead-db4e91534aa5",
+			"key": "accessToken",
+			"value": "ce7a2f8a59f74205cb95b3c6de4e3ffc0c6aa0033b74a35d21a1a583a12032fc",
+			"type": "string"
+		}
+	],
+	"protocolProfileBehavior": {}
+}
